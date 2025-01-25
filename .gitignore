@@ -1,0 +1,47 @@
+# ROS2 Workspace Files
+bot_ws/build/
+bot_ws/install/
+bot_ws/log/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# Docker
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# IDE/Editor Files
+.vscode/
+.idea/
+*.code-workspace
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Logs and Databases
+*.log
+*.sqlite
+*.db
+
+# Compiled files
+*.o
+*.so
+*.a
+*.out
+
+# Temporary files
+*.tmp
+*.temp
+
+# Local development files
+.env
+.local/
