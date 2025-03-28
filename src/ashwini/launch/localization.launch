@@ -1,15 +1,11 @@
 <launch>
-
-	<arg name="custom_amcl_launch_file" default="$(find navigation_stack)/launch/amcl.launch"/>
-
-
-	<include file="$(find ashwini)/launch/house.launch"/>
-
-	<include file="$(arg custom_amcl_launch_file)">
-		<arg name="base_link_name" value="chassis"/>
-		<arg name="map_file" value="$(find ashwini)/../maps/aws_house/map.yaml"/>
-	</include>
-
-	<node name="rviz" pkg="rviz" type="rviz" respawn="false"
-			args="-d $(find navigation_stack)/rviz/amcl.rviz"/>
+    <!-- Run AMCL for localization -->
+    <arg name="custom_amcl_launch_file" default="$(find ashwini)/launch/amcl.launch"/>
+    
+    <include file="$(arg custom_amcl_launch_file)">
+    </include>
+    
+    <!-- Start RViz with a default configuration -->
+    <node name="rviz" pkg="rviz" type="rviz" respawn="false"
+          args="-d $(find ashwini)/default.rviz"/>
 </launch>
