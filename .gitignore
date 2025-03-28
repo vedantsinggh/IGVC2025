@@ -1,7 +1,8 @@
 # ROS2 Workspace Files
-bot_ws/build/
-bot_ws/install/
-bot_ws/log/
+build/
+install/
+log/
+devel/
 
 # Python
 __pycache__/
