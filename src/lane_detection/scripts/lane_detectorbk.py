@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import os
 import rospy
 import cv2
@@ -7,13 +6,13 @@ import numpy as np
 import tensorflow as tf
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+from std_msgs.msg import Header
 
 class LaneDetectionNode:
     def __init__(self):
         # Initialize ROS node
         rospy.init_node('lane_detection_node', anonymous=True)
-        
-        # Get the directory of the current script
+       
         current_dir = os.path.dirname(os.path.abspath(__file__))
         
         # Load the pre-trained U-Net model (use relative path)
@@ -24,15 +23,15 @@ class LaneDetectionNode:
         self.bridge = CvBridge()
         
         # Subscribe to the camera topic
-        camera_topic = rospy.get_param('~camera_topic', '/ashwini/camera/rgb/image_raw')
-        rospy.loginfo(f"Subscribing to camera topic: {camera_topic}")
+        self.image_sub = rospy.Subscriber("/ashwini/camera/rgb/image_raw", Image, self.image_callback)
         
-        # Subscribe to the camera topic
-        self.image_sub = rospy.Subscriber(camera_topic, Image, self.image_callback, queue_size=1)
+        # Optional: Publisher for lane mask and overlay images
+        self.mask_pub = rospy.Publisher('/lane_detection/mask', Image, queue_size=1)
+        self.overlay_pub = rospy.Publisher('/lane_detection/overlay', Image, queue_size=1)
         
         # Parameters
-        self.target_size = (128, 128)
-        self.mask_threshold = 0.5
+        self.target_size = rospy.get_param('~target_size', (128, 128))
+        self.mask_threshold = rospy.get_param('~mask_threshold', 0.5)
         
         rospy.loginfo("Lane Detection Node Initialized")
 
@@ -52,7 +51,7 @@ class LaneDetectionNode:
         # Add batch dimension
         img_input = np.expand_dims(img_normalized, axis=0)
         
-        return img_input, original_size, img_resized
+        return img_input, original_size
 
     def predict_mask(self, img_input):
         """
@@ -64,7 +63,7 @@ class LaneDetectionNode:
         # Convert predicted mask to binary (thresholding)
         pred_mask_binary = (pred_mask > self.mask_threshold).astype(np.uint8)
         
-        return pred_mask_binary, pred_mask
+        return pred_mask_binary
 
     def create_overlay_image(self, original_img, pred_mask_resized):
         """
@@ -88,10 +87,10 @@ class LaneDetectionNode:
             cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
             
             # Preprocess image
-            img_input, original_size, resized_img = self.preprocess_image(cv_image)
+            img_input, original_size = self.preprocess_image(cv_image)
             
             # Predict lane mask
-            predicted_mask, raw_pred_mask = self.predict_mask(img_input)
+            predicted_mask = self.predict_mask(img_input)
             
             # Resize predicted mask back to original size
             pred_mask_resized = cv2.resize(predicted_mask, (original_size[1], original_size[0]))
@@ -99,31 +98,20 @@ class LaneDetectionNode:
             # Create overlay image
             overlay_img = self.create_overlay_image(cv_image, pred_mask_resized)
             
-            # Visualization
-            # Resize raw prediction for visualization
-            raw_mask_resized = cv2.resize(raw_pred_mask, (original_size[1], original_size[0]))
+            # Optional: Publish mask and overlay images
+            if self.mask_pub.get_num_connections() > 0:
+                mask_msg = self.bridge.cv2_to_imgmsg(pred_mask_resized * 255, encoding="mono8")
+                mask_msg.header = msg.header
+                self.mask_pub.publish(mask_msg)
             
-            # Create windows to show different stages
-            cv2.namedWindow('Original Image', cv2.WINDOW_NORMAL)
-            cv2.namedWindow('Raw Prediction', cv2.WINDOW_NORMAL)
-            cv2.namedWindow('Binary Mask', cv2.WINDOW_NORMAL)
-            cv2.namedWindow('Overlay', cv2.WINDOW_NORMAL)
+            if self.overlay_pub.get_num_connections() > 0:
+                overlay_msg = self.bridge.cv2_to_imgmsg(overlay_img, encoding="bgr8")
+                overlay_msg.header = msg.header
+                self.overlay_pub.publish(overlay_msg)
             
-            # Resize windows for better viewing
-            cv2.resizeWindow('Original Image', 640, 480)
-            cv2.resizeWindow('Raw Prediction', 640, 480)
-            cv2.resizeWindow('Binary Mask', 640, 480)
-            cv2.resizeWindow('Overlay', 640, 480)
-            
-            # Show images
-            cv2.imshow('Original Image', cv_image)
-            cv2.imshow('Raw Prediction', raw_mask_resized)
-            cv2.imshow('Binary Mask', pred_mask_resized * 255)
-            cv2.imshow('Overlay', overlay_img)
-            
-            # Wait for key press (1ms)
-            cv2.waitKey(1)
-            
+            # Optional: Log processing details
+            rospy.logdebug("Lane detection processed an image")
+        
         except CvBridgeError as e:
             rospy.logerr(f"CV Bridge Error: {e}")
         except Exception as e:
@@ -135,8 +123,6 @@ def main():
         rospy.spin()
     except rospy.ROSInterruptException:
         rospy.logerr("Lane detection node terminated.")
-    finally:
-        cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    main() 
+    main()
