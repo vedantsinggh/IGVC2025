@@ -1,18 +1,11 @@
 <?xml version="1.0"?>
 
-<!--====================Capture Aswini Dynamics for Gazebo=================== -->
 <robot>
 
-<!--===================================LINKS & JOINTS=======================================-->
-
-  <!--Gazebo does not recognize the colors defined in "materials.xacro". Therefor
-  Gazebo material tag must be specified for each link that we want to be a 
-  specified color-->
   <gazebo reference="base_link">
-      <material>Gazebo/Gold</material>
+      <material>Gazebo/Blue</material>
   </gazebo>
 
-<!--  -->
   <gazebo reference="left_drive_wheel_link">
       <material>Gazebo/PurpleGlow</material>
    	  <kp>1000000.0</kp>
@@ -74,7 +67,7 @@
 <!--=========================================PLUG-INS======================================-->
 
   <!--This plugin allows us to run a diff_drive controller in Gazebo -->
-  <gazebo>
+    <gazebo>
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <legacyMode>false</legacyMode>
       <alwaysOn>true</alwaysOn>
@@ -88,8 +81,19 @@
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <robotBaseFrame>base_link</robotBaseFrame>
+
+      <!-- Added missing parameters -->
+      <rosDebugLevel>info</rosDebugLevel>
+      <publishWheelTF>false</publishWheelTF>
+      <publishOdomTF>true</publishOdomTF>
+      <publishWheelJointState>true</publishWheelJointState>
+      <wheelAcceleration>1.0</wheelAcceleration> <!-- Adjust if needed -->
+      <wheelTorque>5.0</wheelTorque> <!-- Adjust if needed -->
+      <odometrySource>world</odometrySource> <!-- Use "encoder" if needed -->
+      <publishTf>true</publishTf>
     </plugin>
   </gazebo>
+
 
 
 </robot>

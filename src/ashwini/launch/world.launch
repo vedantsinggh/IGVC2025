@@ -30,4 +30,9 @@
 	<node name="rviz" pkg="rviz" type="rviz" respawn="false"
 		  args="-d $(find ashwini)/default.rviz"/>
 
+	<!-- <node pkg="tf" type="tf_remap" name="tf_remap">
+		<remap from="/tf" to="/tf_filtered"/>
+	</node> -->
+
+
 </launch>
