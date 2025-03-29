@@ -3,7 +3,7 @@ import rospy
 from geometry_msgs.msg import Twist
 
 rospy.init_node("move_straight")
-pub = rospy.Publisher("/ashwini/cmd_vel", Twist, queue_size=10)  # Use correct topic
+pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)  # Use correct topic
 rate = rospy.Rate(10)
 
 twist = Twist()

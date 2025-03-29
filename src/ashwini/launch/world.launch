@@ -18,7 +18,8 @@
 		<arg name="world_name" value="$(arg world_file)"/>
 	</include>
 
-	
+	<node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_dummy_root"
+      args="0 0 0 0 0 0 odom dummy_root" />
 
 	<!-- Spawn My Robot -->
 	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
