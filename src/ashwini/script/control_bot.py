@@ -12,7 +12,7 @@ def stop(vel_msg):
 	vel_msg.angular.z = 0
 
 def move():
-	pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+	pub = rospy.Publisher('ashwini/cmd_vel', Twist, queue_size=10)
 	rospy.init_node('bot_controller', anonymous=True)
 	rate = rospy.Rate(10) # 10hz
 
