@@ -75,12 +75,12 @@
         Emiliano Borghi's project-->
         <inertia
           ixx="${mass*(width*width+height*height)/12}" 
-    	  ixy = "0" 
-    	  ixz = "0"
-    	  iyy="${mass*(length*length+height*height)/12}" 
-    	  iyz = "0"
-    	  izz="${mass*(length*length+height*height)/12}"/>
-      </inertial>      
+          ixy = "0" 
+          ixz = "0"
+          iyy="${mass*(length*length+height*height)/12}" 
+          iyz = "0"
+          izz="${mass*(length*length+height*height)/12}"/>
+        </inertial>      
       
     </link>
   </xacro:macro>
@@ -164,7 +164,7 @@
   <!--        -->
   <xacro:continuous_joint name="base_to_left_drive_wheel" rpy="0 0 0" xyz="0 1 0" parent="base" child="left_drive_wheel" 
                           friction="${friction_val}">
-    <origin xyz="-0.52835 0.037 -0.035"/>
+    <origin xyz="-0.05 0.037 -0.035"/>
   </xacro:continuous_joint>
 
   <!--right_drive_wheel_link is a well named link :-) -->
@@ -175,7 +175,7 @@
   <!--        -->
   <xacro:continuous_joint name="base_to_right_drive_wheel" rpy="0 0 0" xyz="0 1 0" parent="base" child="right_drive_wheel"
                           friction="${friction_val}">
-    <origin xyz="-0.52835 -0.421 -0.035"/>
+    <origin xyz="-0.05 -0.421 -0.035"/>
   </xacro:continuous_joint>
 
   <!--+++++++++++++++++++++++++++++++++++LEFT CASTOR+++++++++++++++++++++++++++++++++++++++++++++++++++-->
@@ -189,7 +189,7 @@
 
    <!--joint-->
   <xacro:fixed_joint name="base_to_left_castor_mount" parent="base" child="left_castor_mount">
-    <origin xyz="-0.09445 -0.041 -0.03265"/>
+    <origin xyz="-0.52835 -0.041 -0.03265"/>
   </xacro:fixed_joint>
 
 
@@ -231,7 +231,7 @@
 
    <!--        -->
   <xacro:fixed_joint name="base_to_right_castor_mount" parent="base" child="right_castor_mount">
-    <origin xyz="-0.09445 -0.344 -0.03265"/>
+    <origin xyz="-0.52835 -0.344 -0.03265"/>
   </xacro:fixed_joint>
 
   <!--right_caster_dummy to give the castor wheel rotation about the Z axis -->
