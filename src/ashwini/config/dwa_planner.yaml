@@ -1,0 +1,38 @@
+DWAPlannerROS:
+
+  # Velocity
+  max_vel_x: 0.4
+  min_vel_x: 0.0
+  max_vel_theta: 1.2
+  min_vel_theta: -1.2
+  acc_lim_x: 1.0
+  acc_lim_theta: 2.0
+
+  # Goal Tolerance
+  yaw_goal_tolerance: 0.17
+  xy_goal_tolerance: 0.25
+  latch_xy_goal_tolerance: true
+
+  # Forward Simulation
+  sim_time: 1.2
+  sim_granularity: 0.025
+  vx_samples: 20
+  vtheta_samples: 40
+  controller_frequency: 10.0
+
+  # Obstacle Avoidance Power 🔥
+  path_distance_bias: 32.0      # Stick to global path
+  goal_distance_bias: 20.0
+  occdist_scale: 5.0            # 🚨 KEY: Increase to push robot away from obstacles
+
+  # Trajectory tuning
+  forward_point_distance: 0.325
+  stop_time_buffer: 0.2
+  scaling_speed: 0.25
+  max_scaling_factor: 0.2
+
+  # Debug tools
+  publish_traj_pc: true
+  publish_cost_grid_pc: true
+  meter_scoring: true
+  prune_plan: true
