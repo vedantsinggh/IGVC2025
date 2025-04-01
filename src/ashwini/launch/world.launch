@@ -4,9 +4,8 @@
 	<arg name="robot_name" default="ashwini"/>
 
 	<include file="$(find ashwini)/launch/robot_description.launch"/>
-	<include file="$(find ashwini)/launch/waypoint.launch"/>
-	<include file="$(find ashwini)/launch/slam_navigation.launch"/>
-
+	<include file="$(find ashwini)/launch/maze_navigation.launch"/>
+	
 	<arg name="world_file" default="$(find ashwini)/worlds/empty.world"/>
 
 	<include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -16,11 +15,9 @@
 		<arg name="gui" value="true" />
 		<arg name="world_name" value="$(arg world_file)"/>
 	</include>
-	
 	<node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_dummy_root"
-      args="0 0 0 0 0 0 odom dummy_root " />
-
-	<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+      args="0 0 0 0 0 0 odom dummy_root"/>	
+		<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
 		args="-urdf -param robot_description -model ashwini
 			  -x 0 -y 0 -z 0.23
 			  -R 0 -P 0 -Y 0"/>
