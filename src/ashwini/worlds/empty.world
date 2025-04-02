@@ -29,50 +29,7 @@
       </link>
     </model>
 
-    <!-- Straight Lane Markings -->
-    <model name="lane_marking_1">
-      <static>true</static>
-      <pose>0 0.8 0.025 0 0 0</pose>
-      <link name="lane_marking_link">
-        <visual name="lane_marking_visual">
-          <geometry>
-            <box>
-              <size>20 0.1 0.05</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <specular>1 1 1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <model name="lane_marking_2">
-      <static>true</static>
-      <pose>0 -0.8 0.025 0 0 0</pose>
-      <link name="lane_marking_link">
-        <visual name="lane_marking_visual">
-          <geometry>
-            <box>
-              <size>20 0.1 0.05</size>
-            </box>
-          </geometry>
-          <material>
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <specular>1 1 1 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- ==================== -->
-    <!-- OBSTACLES FOR TESTING -->
-    <!-- ==================== -->
-
-    <!-- Central obstacle cluster -->
+        <!-- Central obstacle cluster -->
     <model name="obstacle_center">
       <static>true</static>
       <pose>2.0 0 0.25 0 0 0</pose>

@@ -3,7 +3,7 @@ global_costmap:
   publish_frequency: 2.5
   transform_tolerance: 2.1
   static_map: true
-  rolling_window: true
+  rolling_window: false 
   width: 15
   height: 15
   origin_x: -7.5
